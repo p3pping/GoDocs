@@ -1,0 +1,38 @@
+body, h1, h2, h3, h4, h5, div{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+
+.header{
+    width: 100%;    
+    background-color: #ffffff;
+    height: 75px;
+    padding-top: 15px;
+}
+
+.header h1{
+    display:inline-block;    
+}
+
+.logo {
+    width: 150px;
+    display: inline-block;
+    margin-left: 10%;
+    margin-right: 50px;
+    vertical-align: top;
+}
+
+.wrapper{
+    width:100%;
+    background-color: rgba(22,100,156,.8);
+    min-height: 100%;
+}
+
+.main{
+    width: 1024px;
+    margin: 0 auto;
+    background-color: #eeeeee;
+    margin-top: 0px;
+    padding: 0px;
+}
