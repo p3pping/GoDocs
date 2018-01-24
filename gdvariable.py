@@ -4,6 +4,8 @@ class gdvariable:
         assign_location = code.find("=")
         var_location = code.find("var")
 
+        self._code = code
+
         #isolate variable name
         self._name = code[(var_location+len("var ")) if var_location != -1 else 0: assign_location if assign_location != -1 else len(code)]
 
@@ -48,10 +50,23 @@ class gdvariable:
     def concat_desc(desc):
         self._desc += desc  
     
-    def get_markup(self):
+    def get_brief_markup(self):
+        display_code = self._code if self._code.find("=") == -1 else self._code[:self._code.find("=")-1]
+        display_code = display_code.replace("var", "")
+
         markup = str("")
         markup += "<div>"
-        markup += "<h4>Name:"+self._name+" "+("(EXPORT)" if self._is_export else "")+"</h4>"        
+        markup += "<h4><a href=\"#"+self._name+"\">"+display_code+"</a></h4>"
+        markup += "</div>"
+        return markup
+
+    def get_full_markup(self):
+        display_code = self._code if self._code.find("=") == -1 else self._code[:self._code.find("=")-1]
+        display_code = display_code.replace("var", "")
+
+        markup = str("")
+        markup += "<div>"
+        markup += "<h4><a name=\""+self._name+"\">Name:"+display_code+"</a></h4>"        
         markup += "<p>Description: "+self._desc+"</p>"
         markup += "</div>"
         return markup

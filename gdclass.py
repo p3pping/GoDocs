@@ -1,3 +1,8 @@
+import os
+import utils
+from constants import constants
+from string import Template
+
 class gdclass:
     
     def __init__(self, filename):
@@ -5,7 +10,7 @@ class gdclass:
         self._public_vars = []
         self._private_vars = [] 
         self._public_funcs = []
-        self._private_funcs = []
+        self._private_funcs = []        
     
     def get_filename(self):
         return self._filename    
@@ -29,29 +34,21 @@ class gdclass:
             self._private_funcs.append(function)
     
     def get_markup(self):
-        markup = str("<html><body>")
-        markup += "<div>"
-        markup += "<h1>Class: "+self._filename+"</h1>"
-        markup += "<h2>Members:</h2>"
 
-        markup += "<h3>Public: </h3>"
+        class_temp = Template(utils.get_template(constants.CLASS_TEMPLATE_FILE))
+        
+        pub_mems = ""
+        pub_mems_brief = ""
         for member in self._public_vars:
-            markup += member.get_markup()
+            pub_mems += member.get_full_markup()
+            pub_mems_brief += member.get_brief_markup()
 
-        markup += "<h3>Private </h3>"
-        for member in self._private_vars:
-            markup += member.get_markup()
-
-        markup += "<h2>Functions:</h2>"
-
-        markup += "<h3>Public: </h3>"
+        pub_funcs = ""
+        pub_funcs_brief = ""
         for func in self._public_funcs:
-            markup += func.get_markup()
+            pub_funcs += func.get_full_markup()
+            pub_funcs_brief += func.get_brief_markup()
         
-        markup += "<h3>Private </h3>"
-        for func in self._private_funcs:
-            markup += func.get_markup()
-        
-        markup += "</body></html>"
+        markup = class_temp.substitute(title=self._filename, name=self._filename, public_members=pub_mems_brief, public_funcs=pub_funcs_brief, full_mem_markup=pub_mems, full_func_markup=pub_funcs)
         return markup
     

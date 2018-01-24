@@ -2,6 +2,17 @@ import os
 import gdclass
 import gdvariable
 import gdfunction
+from constants import constants
+from string import Template
+from shutil import copyfile
+
+def get_template(template):
+    content = ""
+    with open(template, "r") as f:
+        content = f.read()
+    f.close()
+
+    return content
 
 #searches directory recursively for gd scripts and returns a list of all gd scripts
 def discover_scripts_recur(dir_path):
@@ -89,8 +100,11 @@ def export_to_html(project_dir, export_dir, scripts):
         if not os.path.exists(export_dir):
             os.makedirs(export_dir)
 
-        #begin our crude html doc
-        menu_markup = "<html><body><h1>Menu</h1><hr><ul>"
+        #begin our crude menu html doc
+        menu_template = Template(get_template(constants.MENU_TEMPLATE_FILE))        
+        menu_list = ""
+
+        
 
         fnames = {}
 
@@ -114,7 +128,7 @@ def export_to_html(project_dir, export_dir, scripts):
             
             #add file extension for html and add to the menu
             fname = fname+".html"
-            menu_markup += "<li><a href=\""+fname+"\">"+cur_rel_parth+"</a></li>"
+            menu_list += "<li><a href=\""+fname+"\">"+cur_rel_parth+"</a></li>"
 
             #generate the markup            
             export_markup = script.get_markup()
@@ -124,10 +138,16 @@ def export_to_html(project_dir, export_dir, scripts):
                 script_file.write(export_markup)
             script_file.close()     
         
-        #end out crude html doc
-        menu_markup += "<ul></body></html>"
-
+        #compile index html doc
+        index_html = menu_template.substitute(project_name="", menu=menu_list)
+        
         #write the doc to the file
         with open(working_dir+"index.html", "w") as f:
-            f.write(menu_markup)
+            f.write(index_html)
         f.close()
+
+        #copy css
+        if not os.path.exists(working_dir+"css"):
+            os.makedirs(working_dir+"css")
+        copyfile(constants.CSS_TEMPLATE_FILE, working_dir+"css\\style.css")
+

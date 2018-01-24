@@ -4,6 +4,8 @@ class gdfunction:
         args_end_location = def_line.find(")")
         func_location = def_line.find("func")
 
+        self._code = def_line
+
         #isolate func name
         self._name = def_line[(func_location+len("func ")): args_location]
 
@@ -46,10 +48,21 @@ class gdfunction:
     def is_public(self):
         return self._public
 
-    def get_markup(self):
+    def get_brief_markup(self):
+        display_code = self._code.replace("func","").replace(":","")
+
         markup = str("")
         markup += "<div>"
-        markup += "<h4>Name:"+self._name+"</h4>"        
+        markup += "<h4><a href=\"#"+self._name+"\" >"+display_code+"</a></h4>"
+        markup += "</div>"
+        return markup
+
+    def get_full_markup(self):
+        display_code = self._code.replace(":","")
+
+        markup = str("")
+        markup += "<div>"
+        markup += "<h4><a name=\""+self._name+"\">"+display_code+"</a></h4>"        
         markup += "<h5>Args: "
         if self._args == None:
             markup += "None"

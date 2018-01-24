@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>{%title}</title>
+        <title>${title}</title>
         <link type="text/css" rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
@@ -8,16 +8,19 @@
             <div class="header">
                 <!-- header -->
                 <img src="https://godotengine.org/themes/godotengine/assets/logo.svg" alt="godot-logo" class="logo"/>
-                <h1>${project_name}</h1>
+                <h1>${name}</h1>
             </div>
         
             <div class="main">
-                <h2 id="script-menu">Scripts</h2>
-                <!-- main content -->
-                <ul>
-                    <!-- menu items -->
-                    ${menu}
-                </ul>
+                <h2>Members:</h2>
+                ${public_members}        
+        
+                <h2>Functions:</h2>    
+                ${public_funcs}
+                
+                <h2>Details</h2>
+                ${full_mem_markup}
+                ${full_func_markup}
             </div>
         </div>
     </body>
